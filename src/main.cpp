@@ -192,7 +192,7 @@ void setup() {
   // from the Losant platform.
   device.onCommand(&handleCommand);
 
-
+//
   
   initLed();
   setColour(CRGB::Blue);
