@@ -5,6 +5,7 @@
 #include <Losant.h>
 #include <Wire.h>
 #include <FastLED.h>
+#include <Adafruit_VL6180X.h>
 
 //States KLOALA
 
@@ -65,12 +66,57 @@ void initLed(){
   FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness( BRIGHTNESS );
 }
-
 void setColour(CRGB colour ){
   leds[0] = colour;
   leds[1] = colour;
   FastLED.show();
 }
+
+//------------------------------------------------------------------------
+//------------------------------------------------------------------------
+Adafruit_VL6180X disatanceSensor = Adafruit_VL6180X();
+int refZeroDistance = 100;  //Von Losant gesendet nach PowerUp
+int refFullDistance = 50; // Von Losant gesendet nach PowerUp
+int aktDistance = 75;
+int aktProzent = 0;
+
+void initDistanceSensor(){
+  disatanceSensor.begin();
+}
+
+int getRefZero(){
+  //...
+  return 0;
+}
+
+int getRefFull(){
+  //...
+  return 0;
+}
+
+void setRefZero(int newZero){
+    StaticJsonDocument<200> jsonBuffer;
+  JsonObject root = jsonBuffer.to<JsonObject>();
+  root["RefZero"] = newZero;
+  // Send the state to Losant.
+  device.sendState(root);
+}
+
+void setRefFull(int newFull){
+    StaticJsonDocument<200> jsonBuffer;
+  JsonObject root = jsonBuffer.to<JsonObject>();
+  root["RefFull"] = newFull;
+  // Send the state to Losant.
+  device.sendState(root);
+}
+
+int distance2percent(int distanceMM){
+  int distancePercent;
+  distancePercent= ((distanceMM - refZeroDistance) * 100) / (refFullDistance - refZeroDistance); //umrechnung in Prozent
+  return distancePercent;
+}
+//------------------------------------------------------------------------
+//------------------------------------------------------------------------
 
 // Set time via NTP, as required for x.509 validation
 void setClock() {
@@ -196,8 +242,17 @@ void setup() {
   
   initLed();
   setColour(CRGB::Blue);
+
+  
+
   
   connect();
+
+  initDistanceSensor();
+
+  aktProzent = distance2percent(aktDistance);
+  Serial.println(aktProzent);
+
   commands();
   sendAktprozent(69);
 }
@@ -222,7 +277,6 @@ void loop() {
   if(toReconnect) {
     connect();
   }
-
 
   device.loop();
 }
