@@ -75,27 +75,29 @@ void setColour(CRGB colour ){
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
 Adafruit_VL6180X disatanceSensor = Adafruit_VL6180X();
-int refZeroDistance = 100;  //Von Losant gesendet nach PowerUp
-int refFullDistance = 50; // Von Losant gesendet nach PowerUp
-int aktDistance = 75;
+int refZeroDistance = -1;  //Von Losant gesendet nach PowerUp
+int refFullDistance = -1; // Von Losant gesendet nach PowerUp
+int aktDistance = 0;
 int aktProzent = 0;
 
 void initDistanceSensor(){
-  disatanceSensor.begin();
+  Serial.println("Adafruit VL6180x test!");
+  if (! disatanceSensor.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
 }
-
+/*
 int getRefZero(){
-  //...
-  return 0;
-}
-
 int getRefFull(){
-  //...
-  return 0;
-}
-
+Done by Commandhandler
+*/
 void setRefZero(int newZero){
-    StaticJsonDocument<200> jsonBuffer;
+  refZeroDistance = newZero;
+  Serial.println("in functoin value:");
+  Serial.println(newZero);
+  StaticJsonDocument<200> jsonBuffer;
   JsonObject root = jsonBuffer.to<JsonObject>();
   root["RefZero"] = newZero;
   // Send the state to Losant.
@@ -103,7 +105,8 @@ void setRefZero(int newZero){
 }
 
 void setRefFull(int newFull){
-    StaticJsonDocument<200> jsonBuffer;
+  refFullDistance = newFull;
+  StaticJsonDocument<200> jsonBuffer;
   JsonObject root = jsonBuffer.to<JsonObject>();
   root["RefFull"] = newFull;
   // Send the state to Losant.
@@ -115,6 +118,7 @@ int distance2percent(int distanceMM){
   distancePercent= ((distanceMM - refZeroDistance) * 100) / (refFullDistance - refZeroDistance); //umrechnung in Prozent
   return distancePercent;
 }
+
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
 
@@ -148,6 +152,16 @@ void handleCommand(LosantCommand *command) {
     */
     // int temperature = payload["temperature"];
     // Serial.println(temperature);
+  }
+  else if(strcmp(command->name, "setRefFull") == 0){
+    int i = disatanceSensor.readRange();
+    Serial.print("in setZero Command, i=");
+    Serial.print(i);
+    setRefFull(i);
+  }
+  else if(strcmp(command->name, "setRefZero") == 0){
+    int i = disatanceSensor.readRange();
+    setRefZero(i);
   }
   else if(strcmp(command->name, "SerialPrint") == 0){
     Serial.println("Hey ein Losant befehl");
@@ -228,6 +242,8 @@ void sendAktprozent(int aktProzent){
 
 
 
+int distance = 0;
+int distanceOld = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -250,11 +266,11 @@ void setup() {
 
   initDistanceSensor();
 
-  aktProzent = distance2percent(aktDistance);
-  Serial.println(aktProzent);
-
-  commands();
-  sendAktprozent(69);
+  Serial.println("Kalibrierung benötigt!");
+  while((refFullDistance == -1) || (refZeroDistance == -1)){
+    device.loop();
+  }
+  Serial.println("Kalibrierung komplett");
 }
 
 
@@ -277,6 +293,16 @@ void loop() {
   if(toReconnect) {
     connect();
   }
+  
+  distance = disatanceSensor.readRange();
+  if (distance != distanceOld){
+    Serial.println("Distance [mm]: ");
+    Serial.print(distance);
+    sendAktprozent(distance2percent(distance));
+    distanceOld = distance;
+  }
+  
+
 
   device.loop();
 }
