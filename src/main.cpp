@@ -7,7 +7,9 @@
 #include <FastLED.h>
 #include <Adafruit_VL6180X.h>
 
-//States KLOALA
+//Time credentials
+unsigned long aktTime = 0;
+
 
 // WiFi credentials.
 const char* WIFI_SSID = "Hofmayer_Keller";
@@ -24,9 +26,10 @@ const char* LOSANT_ACCESS_SECRET = "744103ac1613c555e0b8bc25407d1d18e3478f2d44a3
 #define COLOR_ORDER GRB
 #define CHIPSET     WS2811
 #define NUM_LEDS    2
-#define BRIGHTNESS  200
+#define BRIGHTNESS  100
 #define FRAMES_PER_SECOND 60
 
+// Sensor cerdiancials.
 
 
 // Cert taken from 
@@ -65,6 +68,8 @@ CRGB leds[NUM_LEDS];
 void initLed(){
   FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness( BRIGHTNESS );
+  FastLED.clear();
+  FastLED.show();
 }
 void setColour(CRGB colour ){
   leds[0] = colour;
@@ -74,11 +79,14 @@ void setColour(CRGB colour ){
 
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
+
 Adafruit_VL6180X disatanceSensor = Adafruit_VL6180X();
 int refZeroDistance = -1;  //Von Losant gesendet nach PowerUp
 int refFullDistance = -1; // Von Losant gesendet nach PowerUp
-int aktDistance = 0;
+uint8_t aktDistance = 0;
 int aktProzent = 0;
+unsigned int median = 0;
+unsigned int i = 0;
 
 void initDistanceSensor(){
   Serial.println("Adafruit VL6180x test!");
@@ -88,11 +96,21 @@ void initDistanceSensor(){
   }
   Serial.println("Sensor found!");
 }
-/*
-int getRefZero(){
-int getRefFull(){
-Done by Commandhandler
-*/
+
+
+void getDistance(){ 
+  int tempDistance = (int)disatanceSensor.readRange();
+  if(disatanceSensor.readRangeStatus() == 0){
+    median = median + tempDistance;
+    i ++; 
+    if(i >=10){
+      aktDistance = median / 10;
+      i = 0;
+      median = 0;
+    }
+  }
+}
+
 void setRefZero(int newZero){
   refZeroDistance = newZero;
   Serial.println("in functoin value:");
@@ -152,16 +170,13 @@ void handleCommand(LosantCommand *command) {
     */
     // int temperature = payload["temperature"];
     // Serial.println(temperature);
+  
   }
   else if(strcmp(command->name, "setRefFull") == 0){
-    int i = disatanceSensor.readRange();
-    Serial.print("in setZero Command, i=");
-    Serial.print(i);
-    setRefFull(i);
+    setRefFull(aktDistance);
   }
   else if(strcmp(command->name, "setRefZero") == 0){
-    int i = disatanceSensor.readRange();
-    setRefZero(i);
+    setRefZero(aktDistance);
   }
   else if(strcmp(command->name, "SerialPrint") == 0){
     Serial.println("Hey ein Losant befehl");
@@ -174,6 +189,9 @@ void handleCommand(LosantCommand *command) {
   }
   else if(strcmp(command->name, "LedColourGreen") == 0){
     setColour(CRGB::Green);
+  }
+   else if(strcmp(command->name, "LedColourBlack") == 0){
+    setColour(CRGB::Black);
   }
 }
 
@@ -214,7 +232,6 @@ void connect() {
     delay(500);
     Serial.print(".");
   }
-
   Serial.println("Connected!");
 }
 
@@ -240,41 +257,26 @@ void sendAktprozent(int aktProzent){
   Serial.println(aktProzent);
 }
 
-
-
-int distance = 0;
-int distanceOld = 0;
-
 void setup() {
   Serial.begin(115200);
   //while(!Serial) { }
 
-
-  // Register the command handler to be called when a command is received
-  // from the Losant platform.
   device.onCommand(&handleCommand);
 
-//
   
   initLed();
-  setColour(CRGB::Blue);
-
-  
-
-  
+  initDistanceSensor();
   connect();
 
-  initDistanceSensor();
+  aktTime = millis();
 
   Serial.println("Kalibrierung benötigt!");
   while((refFullDistance == -1) || (refZeroDistance == -1)){
+    getDistance();
     device.loop();
   }
   Serial.println("Kalibrierung komplett");
 }
-
-
-int buttonState = 0;
 
 void loop() {
 
@@ -294,15 +296,12 @@ void loop() {
     connect();
   }
   
-  distance = disatanceSensor.readRange();
-  if (distance != distanceOld){
-    Serial.println("Distance [mm]: ");
-    Serial.print(distance);
-    sendAktprozent(distance2percent(distance));
-    distanceOld = distance;
+  getDistance();
+
+  if((millis()-aktTime) > 1000){
+  aktTime = millis();
+  sendAktprozent(distance2percent(aktDistance));
   }
-  
-
-
   device.loop();
 }
+
