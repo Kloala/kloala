@@ -158,10 +158,12 @@ void handleCommand(LosantCommand *command) {
   Serial.print("Command received: ");
   Serial.println(command->name);
   // Optional command payload. May not be present on all commands.
-  //JsonObject payload = *command->payload;
+  JsonObject payload = *command->payload;
   
   // Perform action specific to the command received.
-  if(strcmp(command->name, "toggle") == 0) {
+  if(strcmp(command->name, "setReferenceDistance") == 0) {
+    refZeroDistance = payload["RefZero"];
+    refFullDistance = payload["RefFull"];
     /**
     * In Losant, including a payload along with your
     * command is optional. This is an example of how
