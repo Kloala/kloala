@@ -303,5 +303,6 @@ void loop() {
   sendAktprozent(distance2percent(aktDistance));
   }
   device.loop();
+  //
 }
 
