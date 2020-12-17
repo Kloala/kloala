@@ -16,9 +16,9 @@ const char* WIFI_SSID = "Hofmayer_Keller";
 const char* WIFI_PASS = "J0p@ul21!";
 
 // Losant credentials.
-const char* LOSANT_DEVICE_ID = "5fc6b0c1d428370007e12b2f";
-const char* LOSANT_ACCESS_KEY = "d7cbb9f2-3c05-42d1-be0f-a007740e6346";
-const char* LOSANT_ACCESS_SECRET = "744103ac1613c555e0b8bc25407d1d18e3478f2d44a386ef0ee49134b7fa4e42";
+const char* LOSANT_DEVICE_ID = "5fdb7d2e2aa0d500073c1599";
+const char* LOSANT_ACCESS_KEY = "0b936153-082c-4ff8-8bf4-3f5bea38d6b5";
+const char* LOSANT_ACCESS_SECRET = "fd8536019cde72bdae7c9fcb6faadae8853bd4ee86c6fda2ad31a31f4e378e87";
 
 // LEDs credeentials.
 
@@ -252,7 +252,7 @@ void commands() {
 void sendAktprozent(int aktProzent){
   StaticJsonDocument<200> jsonBuffer;
   JsonObject root = jsonBuffer.to<JsonObject>();
-  root["aktProzent"] = aktProzent;
+  root["actPercent"] = aktProzent;
   device.sendState(root);
   Serial.println(aktProzent);
 }
