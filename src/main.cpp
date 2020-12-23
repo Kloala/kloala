@@ -30,7 +30,7 @@ const char* LOSANT_ACCESS_SECRET = "fd8536019cde72bdae7c9fcb6faadae8853bd4ee86c6
 #define FRAMES_PER_SECOND 60
 
 // Sensor cerdiancials.
-
+#define AVERAGE_SMOOTHING 10 
 
 // Cert taken from 
 // https://github.com/Losant/losant-mqtt-ruby/blob/master/lib/losant_mqtt/RootCA.crt
@@ -86,13 +86,15 @@ int refFullDistance = -1; // Von Losant gesendet nach PowerUp
 uint8_t aktDistance = 0;
 int aktProzent = 0;
 unsigned int median = 0;
-unsigned int i = 0;
+unsigned int counterRunsSensor = 0;
 
 void initDistanceSensor(){
   Serial.println("Adafruit VL6180x test!");
   if (! disatanceSensor.begin()) {
     Serial.println("Failed to find sensor");
-    while (1);
+    while (1){
+      setColour(CRGB::Red);
+    }
   }
   Serial.println("Sensor found!");
 }
@@ -102,10 +104,10 @@ void getDistance(){
   int tempDistance = (int)disatanceSensor.readRange();
   if(disatanceSensor.readRangeStatus() == 0){
     median = median + tempDistance;
-    i ++; 
-    if(i >=10){
-      aktDistance = median / 10;
-      i = 0;
+    counterRunsSensor ++; 
+    if(counterRunsSensor >=AVERAGE_SMOOTHING){
+      aktDistance = median / AVERAGE_SMOOTHING;
+      counterRunsSensor = 0;
       median = 0;
     }
   }
@@ -131,9 +133,9 @@ void setRefFull(int newFull){
   device.sendState(root);
 }
 
-int distance2percent(int distanceMM){
-  int distancePercent;
-  distancePercent= ((distanceMM - refZeroDistance) * 100) / (refFullDistance - refZeroDistance); //umrechnung in Prozent
+int distance2percent(uint8_t distanceMM){
+  int distancePercent = 0;
+  distancePercent= ((distanceMM - refZeroDistance) * 100)  / (refFullDistance - refZeroDistance); //umrechnung in Prozent
   return distancePercent;
 }
 
@@ -162,26 +164,22 @@ void handleCommand(LosantCommand *command) {
   
   // Perform action specific to the command received.
   if(strcmp(command->name, "setReferenceDistance") == 0) {
-    refZeroDistance = payload["RefZero"];
-    refFullDistance = payload["RefFull"];
-    /**
-    * In Losant, including a payload along with your
-    * command is optional. This is an example of how
-    * to parse a JSON payload from Losant and print
-    * the value of a key called "temperature".
-    */
-    // int temperature = payload["temperature"];
-    // Serial.println(temperature);
-  
+    refZeroDistance = payload["refZero"];
+    refFullDistance = payload["refFull"];
+     Serial.println(refZeroDistance);
+    Serial.println(refFullDistance);
+    if((refFullDistance == 0) || (refZeroDistance == 0)){
+      Serial.println("Error Reciving Data from Losant: Restart or Calibrate manually");
+      setColour(CRGB::OrangeRed);
+      refFullDistance = -1;
+      refZeroDistance = -1;
+    }  
   }
   else if(strcmp(command->name, "setRefFull") == 0){
     setRefFull(aktDistance);
   }
   else if(strcmp(command->name, "setRefZero") == 0){
     setRefZero(aktDistance);
-  }
-  else if(strcmp(command->name, "SerialPrint") == 0){
-    Serial.println("Hey ein Losant befehl");
   }
   else if(strcmp(command->name, "LedColourRed") == 0){
     setColour(CRGB::Red);
@@ -256,7 +254,6 @@ void sendAktprozent(int aktProzent){
   JsonObject root = jsonBuffer.to<JsonObject>();
   root["actPercent"] = aktProzent;
   device.sendState(root);
-  Serial.println(aktProzent);
 }
 
 void setup() {
@@ -265,19 +262,22 @@ void setup() {
 
   device.onCommand(&handleCommand);
 
-  
   initLed();
   initDistanceSensor();
+
+  setColour(CRGB::Blue);
   connect();
 
   aktTime = millis();
 
+  setColour(CRGB::Yellow);
   Serial.println("Kalibrierung benötigt!");
   while((refFullDistance == -1) || (refZeroDistance == -1)){
     getDistance();
     device.loop();
   }
   Serial.println("Kalibrierung komplett");
+  setColour(CRGB::Black);
 }
 
 void loop() {
@@ -295,16 +295,23 @@ void loop() {
   }
 
   if(toReconnect) {
+    setColour(CRGB::Blue);
     connect();
+    setColour(CRGB::Black);
   }
   
   getDistance();
 
   if((millis()-aktTime) > 1000){
-  aktTime = millis();
-  sendAktprozent(distance2percent(aktDistance));
+      aktTime = millis();
+
+      aktProzent = distance2percent(aktDistance);
+      Serial.print("aktuelle Distanze [mm]=");
+      Serial.print(aktDistance);
+      Serial.print(" |  Prozent [%] = ");
+      Serial.println(aktProzent);
+      sendAktprozent(aktProzent);
   }
   device.loop();
-  //
 }
 
