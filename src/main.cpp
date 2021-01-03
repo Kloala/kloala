@@ -81,13 +81,14 @@ void setColour(CRGB colour ){
 //------------------------------------------------------------------------
 
 Adafruit_VL6180X disatanceSensor = Adafruit_VL6180X();
-int refZeroDistance = -1;  //Von Losant gesendet nach PowerUp
-int refFullDistance = -1; // Von Losant gesendet nach PowerUp
-uint8_t aktDistance = 0;
+unsigned int refZeroDistance = 0;  //Von Losant gesendet nach PowerUp
+unsigned refFullDistance = 0; // Von Losant gesendet nach PowerUp
+unsigned int aktDistance = 0;
 int aktProzent = 0;
-unsigned int median = 0;
+unsigned long median = 0;
 unsigned int counterRunsSensor = 0;
 
+//inits DistanceSensor
 void initDistanceSensor(){
   Serial.println("Adafruit VL6180x test!");
   if (! disatanceSensor.begin()) {
@@ -99,20 +100,30 @@ void initDistanceSensor(){
   Serial.println("Sensor found!");
 }
 
-
-void getDistance(){ 
+//reads Distance from Sensor, add it to the median, increments counterRunsSensor
+void readDistance(){ 
   int tempDistance = (int)disatanceSensor.readRange();
   if(disatanceSensor.readRangeStatus() == 0){
     median = median + tempDistance;
     counterRunsSensor ++; 
+    /*
     if(counterRunsSensor >=AVERAGE_SMOOTHING){
       aktDistance = median / AVERAGE_SMOOTHING;
       counterRunsSensor = 0;
       median = 0;
     }
+    */
   }
 }
 
+//sets aktDistance as an Average of the past CounterRunsSensor and resets medain & counterruns
+void getNewDistance(){
+  aktDistance = median / counterRunsSensor;
+      counterRunsSensor = 0;
+      median = 0;
+}
+
+//Sets Reference distance Zero and sents it to losant
 void setRefZero(int newZero){
   refZeroDistance = newZero;
   Serial.println("in functoin value:");
@@ -124,6 +135,7 @@ void setRefZero(int newZero){
   device.sendState(root);
 }
 
+//Sets Reference distance Full and sents it to losant
 void setRefFull(int newFull){
   refFullDistance = newFull;
   StaticJsonDocument<200> jsonBuffer;
@@ -133,14 +145,12 @@ void setRefFull(int newFull){
   device.sendState(root);
 }
 
-int distance2percent(uint8_t distanceMM){
+//Processes mm into %, retuns percent as an int
+int distance2percent(int distanceMM, int refZero, int refFull){
   int distancePercent = 0;
-  distancePercent= ((distanceMM - refZeroDistance) * 100)  / (refFullDistance - refZeroDistance); //umrechnung in Prozent
+  distancePercent= 100 - ((distanceMM - refFull) * 100)  / (refZero - refFull); //umrechnung in Prozent
   return distancePercent;
 }
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 
 // Set time via NTP, as required for x.509 validation
 void setClock() {
@@ -161,12 +171,11 @@ void handleCommand(LosantCommand *command) {
   Serial.println(command->name);
   // Optional command payload. May not be present on all commands.
   JsonObject payload = *command->payload;
-  
-  // Perform action specific to the command received.
+
   if(strcmp(command->name, "setReferenceDistance") == 0) {
     refZeroDistance = payload["refZero"];
     refFullDistance = payload["refFull"];
-     Serial.println(refZeroDistance);
+    Serial.println(refZeroDistance);
     Serial.println(refFullDistance);
     if((refFullDistance == 0) || (refZeroDistance == 0)){
       Serial.println("Error Reciving Data from Losant: Restart or Calibrate manually");
@@ -193,8 +202,12 @@ void handleCommand(LosantCommand *command) {
    else if(strcmp(command->name, "LedColourBlack") == 0){
     setColour(CRGB::Black);
   }
+  else if(strcmp(command->name, "LedColourYellow") == 0){
+    setColour(CRGB::Yellow);
+  }
 }
 
+//Connects ESP with Wifi and Losant
 void connect() {
 
   // Connect to Wifi.
@@ -235,21 +248,8 @@ void connect() {
   Serial.println("Connected!");
 }
 
-void commands() {
-  Serial.println("Sending Command!");
-  bool isIdel = true;
-  // Losant uses a JSON protocol. Construct the simple state object.
-  // { "button" : true }
-  StaticJsonDocument<200> jsonBuffer;
-  JsonObject root = jsonBuffer.to<JsonObject>();
-  root["aktProzent"] = 99;
-  root["isIdel"] = isIdel;
-
-  // Send the state to Losant.
-  device.sendState(root);
-}
-
-void sendAktprozent(int aktProzent){
+//sends the given value to Losant as the actPercent Deviceparameter
+void sendAktProzent(int aktProzent){
   StaticJsonDocument<200> jsonBuffer;
   JsonObject root = jsonBuffer.to<JsonObject>();
   root["actPercent"] = aktProzent;
@@ -258,7 +258,6 @@ void sendAktprozent(int aktProzent){
 
 void setup() {
   Serial.begin(115200);
-  //while(!Serial) { }
 
   device.onCommand(&handleCommand);
 
@@ -272,8 +271,14 @@ void setup() {
 
   setColour(CRGB::Yellow);
   Serial.println("Kalibrierung benötigt!");
-  while((refFullDistance == -1) || (refZeroDistance == -1)){
-    getDistance();
+  while((refFullDistance == 0) || (refZeroDistance == 0)){
+    readDistance();
+    if((millis()-aktTime) > 250){ //process distance every 250ms
+      aktTime = millis();
+      Serial.print("runs =");
+      Serial.println(counterRunsSensor);
+      getNewDistance();
+    }
     device.loop();
   }
   Serial.println("Kalibrierung komplett");
@@ -300,17 +305,21 @@ void loop() {
     setColour(CRGB::Black);
   }
   
-  getDistance();
+  readDistance();
 
-  if((millis()-aktTime) > 1000){
+  if((millis()-aktTime) > 1000){ //send once per second
       aktTime = millis();
+      Serial.print("runs =");
+      Serial.print(counterRunsSensor);
 
-      aktProzent = distance2percent(aktDistance);
-      Serial.print("aktuelle Distanze [mm]=");
+      getNewDistance();
+      aktProzent = distance2percent(aktDistance,refZeroDistance,refFullDistance);
+
+      Serial.print(" | aktuelle Distanze [mm]=");
       Serial.print(aktDistance);
       Serial.print(" |  Prozent [%] = ");
       Serial.println(aktProzent);
-      sendAktprozent(aktProzent);
+      sendAktProzent(aktProzent);
   }
   device.loop();
 }
