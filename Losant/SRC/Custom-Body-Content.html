@@ -1,0 +1,200 @@
+<div class="grid-container">
+    <div class="Infos">
+      <div class="DailyAvg">
+        <div>
+          <p class="title">Daily usage</p>
+        </div>
+        <div>
+          <p id = "Daily" class="value">0,189 Rolls per day</p>
+        </div>
+      </div>
+      <div class="remainingStorage">
+        <div>
+          <p " class="title">Storage</p>
+        </div>
+        <div>
+          <p id="Storage" class="value"></p>
+        </div>
+      </div>
+      <div class="usageWeek">
+        <div>
+          <p class="title">Usage over Day</p>
+        </div>
+        <div class="statImg">
+          <canvas id="myChart2" style="width:100%;height:100%;"></canvas>
+        </div>
+      </div>
+      <div class="usageDay">
+        <div>
+          <p class="title">Usage over Week</p>
+        </div>
+        <div class="statImg">
+          <canvas id="myChart"style="width:100%;height:100%;" ></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="Current"></div>
+    <div class="Storage"></div>
+    <div class="Stats"></div>
+    <div class="Settings"></div>
+  </div>
+  <script>
+
+function updateData(){ 
+      var queryDaten = DashboardBlock.input.queries.myDataStored.items;
+      var averageDay = [queryDaten[0].avMon,
+                        queryDaten[0].avTue,
+                        queryDaten[0].avWed,
+                        queryDaten[0].avThu,
+                        queryDaten[0].avFri,
+                        queryDaten[0].avSat,
+                        queryDaten[0].avSun
+                        ];  
+      var avDay = queryDaten[0].avDay;
+      var nDay = queryDaten[0].nDay;
+      var avWeek = queryDaten[0].avWeek;
+      var nWeek = queryDaten[0].nWeek;
+      var avMonth = queryDaten[0].avMonth;
+      var nMonth = queryDaten[0].nMonth;
+      var statsUpdatedAt = queryDaten[0].updatedAt;
+      
+      var queryDaten2 = DashboardBlock.input.queries.myDataAktuell.items;
+      var actPercent = queryDaten2[0].actPercent;
+      var lastUsage = queryDaten2[0].lastUsage;
+      var usageThisDay = queryDaten2[0].usageThisDay;
+      var usageThisWeek = queryDaten2[0].usageThisWeek;
+      var usageThisMonth = queryDaten2[0].usageThisMonth;
+      var storage = queryDaten2[0].storage;
+      var refZero = queryDaten2[0].refFull;
+      var strorageLastsUntil = queryDaten2[0].strorageLastsUntil;
+      var actUpdatedAt = queryDaten2[0].updatedAt;
+
+      //Update stuff
+
+       document.getElementById("Storage").innerHTML = storage;
+       document.getElementById("Daily").innerHTML = avDay;
+
+
+      //Chart 1
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var chart = new Chart(ctx, {
+            // responsive: true,
+            // maintainAspectRatio: false,
+            // The type of chart we want to create
+            type: 'bar',
+        
+            // The data for our dataset
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday' ,'Sunday'  ],
+                datasets: [{
+                    label: 'KW 31',
+                    backgroundColor: 'rgba(0, 193, 213, 0.2)',
+                    hoverBackgroundColor:'white',
+                    borderColor: 'rgba(0, 193, 213, 8)',
+                    borderWidth: 1.5,
+                //  data: [10, 2, 5, 8, 11,25,7]
+                data: [averageDay[0],averageDay[1],averageDay[2],averageDay[3],averageDay[4],averageDay[5],averageDay[6]]
+
+                
+                }]
+            },
+            // Configuration options go here
+            options: {
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }   
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        fontColor: 'red'
+                    }
+                },
+                scales: {
+                        xAxes: [{
+                            display: true,
+                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                            scaleLabel: { display: false, labelString: 'Wochentage',fontColor:'white', fontSize:10 },
+                            ticks: {fontColor: "white",fontSize: 14},
+                            barThickness: 20,
+                            
+                            minBarLength: 2,
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                            scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize:10 },
+                            ticks: { fontColor: "white", fontSize: 14,beginAtZero: true },
+                        
+                        }]
+                    }
+
+            }
+        });
+      //Chart 2
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            // responsive: true,
+            // maintainAspectRatio: false,
+            // The type of chart we want to create
+            type: 'bar',
+        
+            // The data for our dataset
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday' ,'Sunday'  ],
+                datasets: [{
+                    label: 'KW 31',
+                    backgroundColor: 'rgba(0, 193, 213, 0.2)',
+                    hoverBackgroundColor:'white',
+                    borderColor: 'rgba(0, 193, 213, 8)',
+                    borderWidth: 1.5,
+                    data: [10, 2, 5, 8, 11,25,7]
+                
+                }]
+            },
+            // Configuration options go here
+            options: {
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }   
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        fontColor: 'red'
+                    }
+                },
+                scales: {
+                        xAxes: [{
+                            display: true,
+                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                            scaleLabel: { display: false, labelString: 'Wochentage',fontColor:'white', fontSize:10 },
+                            ticks: {fontColor: "white",fontSize: 14},
+                            barThickness: 20,
+                            
+                            minBarLength: 2,
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            display: true,
+                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                            scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize:10 },
+                            ticks: { fontColor: "white", fontSize: 14,beginAtZero: true },
+                        
+                        }]
+                    }
+            }
+        });
+
+  }
+  DashboardBlock.on("queryChange",updateData);
+  </script>

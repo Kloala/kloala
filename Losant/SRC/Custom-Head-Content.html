@@ -1,0 +1,148 @@
+<meta charset="UTF-8">
+<!--
+You can include any external JavaScript or CSS as needed.
+This example demonstrates including Bootstrap and JQuery
+into your custom HTML page.
+-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<style>
+ body{
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(255, 255, 255);
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "Infos Infos Infos Infos"
+      "Infos Infos Infos Infos"
+      "Infos Infos Infos Infos"
+      "Infos Infos Infos Infos"
+      "Infos Infos Infos Infos"
+      "Infos Infos Infos Infos"
+      "Current Storage Stats Settings";
+      background-color: whitesmoke;
+  }
+  
+  .Infos {
+    display: grid;
+    grid-template-columns: 0.0fr 3fr 0.0fr;
+    grid-template-rows: 1fr 1fr 2fr 2fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". DailyAvg ."
+      ". remainingStorage ."
+      ". usageWeek ."
+      ". usageDay .";
+    grid-area: Infos;
+    background-color: whitesmoke;
+    border: 2px red;
+    text-align: center;
+  }
+  
+  .DailyAvg { grid-area: DailyAvg; 
+    border: 3px solid #00c1d5 ;
+    margin-bottom: 5px;
+    background-color: #404040;
+  
+}
+  
+  .remainingStorage { grid-area: remainingStorage; 
+    border: 3px solid #00c1d5 ;
+    margin-bottom: 5px;
+    background-color: #404040;
+}
+  
+  .usageWeek { grid-area: usageWeek; 
+    border: 3px solid #00c1d5 ;
+    margin-bottom: 5px;
+    background-color: #404040;
+}
+  
+  .usageDay { grid-area: usageDay;
+    border: 3px solid #00c1d5 ;
+    background-color: #404040;
+    margin-bottom: 5px;
+}
+.title{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    padding: 0px;
+    color: #00c1d5;
+    text-transform: uppercase;
+}
+.value{
+    color: whitesmoke;
+}
+.statImg{
+   
+    /* height: 70%;
+    border: 2px solid black ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("Statistik-Mediamodifier_pixabay-1024x576.jpg"); */
+
+}
+
+
+/*Settings*/
+  .Current { grid-area: Current; 
+    height: 70px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://www.svgrepo.com/show/203120/toilet-paper.svg");
+    border: 3px solid #0A4248 ;
+}
+  
+  .Storage { grid-area: Storage; 
+
+    margin-left: 2px;
+    margin-right: 2px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://www.svgrepo.com/show/8584/warehouse.svg");
+    border: 3px solid #0A4248 ;
+}
+  
+  .Stats { grid-area: Stats; 
+
+    margin-right: 2px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://www.svgrepo.com/show/143729/statistics.svg");
+    border: 3px solid #0A4248 ;
+}
+
+  .Settings { grid-area: Settings; 
+
+   
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("https://www.svgrepo.com/show/18106/settings.svg");
+    border: 3px solid #0A4248 ;
+}
+  
+</style>
+<script type="text/javascript">
+
+  /*Custom skript*/
+
+// DashboardBlock.on('change', renderKlorolle);
+
+  /*
+    Render the initial state when the block loads.
+  */
+ 
+</script>
