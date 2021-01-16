@@ -1,0 +1,1016 @@
+{
+  "_exportDate": "2021-01-16T15:42:05.630Z",
+  "_type": "flow",
+  "applicationId": "5fdb7be95651900008f454e5",
+  "customNodeVersions": [
+  ],
+  "customNodes": [
+  ],
+  "description": "",
+  "enabled": true,
+  "flowClass": "cloud",
+  "globals": [
+  ],
+  "id": "5fdb889d2aa0d500073c15d7",
+  "name": "DataProcessing input Kloala",
+  "nodes": [
+    {
+      "config": {
+        "nameTemplate": "setReferenceDistance",
+        "payloadTemplate": "{\r\n    \"refZero\" : {{dataTabel.items.[0].refZero}},\r\n    \"refFull\" : \"{{dataTabel.items.[0].refFull}}\"\r\n}",
+        "payloadTemplateType": "json",
+        "sendToDeviceIds": [
+          "5fdb7d2e2aa0d500073c1599"
+        ],
+        "sendToDeviceTags": [
+        ]
+      },
+      "id": "z9yQ7XXs5R",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "deviceSelectionType": "direct",
+        "id": "z9yQ7XXs5R",
+        "label": "Device: Command",
+        "name": "device-command",
+        "x": 80,
+        "y": 380
+      },
+      "outputIds": [
+        [
+          "LeE4ULlu6B"
+        ]
+      ],
+      "type": "DeviceSendCommandNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "SWJ3urg_Ss",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 80,
+        "y": 280
+      },
+      "outputIds": [
+        [
+          "z9yQ7XXs5R"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "message": "",
+        "property": ""
+      },
+      "id": "LeE4ULlu6B",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "id": "LeE4ULlu6B",
+        "label": "Debug",
+        "name": "debug",
+        "x": 80,
+        "y": 480
+      },
+      "outputIds": [
+      ],
+      "type": "DebugNode"
+    },
+    {
+      "config": {
+        "delay": "2"
+      },
+      "id": "XNmNMfbJNp",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "XNmNMfbJNp",
+        "label": "Delay",
+        "name": "delay",
+        "x": 80,
+        "y": 180
+      },
+      "outputIds": [
+        [
+          "SWJ3urg_Ss"
+        ]
+      ],
+      "type": "DelayNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "refZero",
+            "valueTemplate": "{{data.RefZero}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "dqBvj7413w",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "dqBvj7413w",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 280,
+        "y": 180
+      },
+      "outputIds": [
+        [
+          "QM30cOI3pz"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "message": "",
+        "property": ""
+      },
+      "id": "QM30cOI3pz",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "id": "QM30cOI3pz",
+        "label": "Debug",
+        "name": "debug",
+        "x": 280,
+        "y": 280
+      },
+      "outputIds": [
+      ],
+      "type": "DebugNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "refFull",
+            "valueTemplate": "{{data.RefFull}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "Ng1HfI96WH",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "dqBvj7413w",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 480,
+        "y": 180
+      },
+      "outputIds": [
+        [
+          "m9FIjtVVUj"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "message": "",
+        "property": ""
+      },
+      "id": "m9FIjtVVUj",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "id": "QM30cOI3pz",
+        "label": "Debug",
+        "name": "debug",
+        "x": 480,
+        "y": 280
+      },
+      "outputIds": [
+      ],
+      "type": "DebugNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "cZ6dAM32Q2",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 980,
+        "y": 280
+      },
+      "outputIds": [
+        [
+          "e2Cai1Zv2X"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].actPercent}} - {{data.actPercent}}",
+            "resultPath": "data.lastUsage"
+          }
+        ]
+      },
+      "id": "p_Y7mLl_si",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "p_Y7mLl_si",
+        "label": "lastUsage",
+        "name": "math",
+        "x": 980,
+        "y": 520
+      },
+      "outputIds": [
+        [
+          "FX28mGsf4z"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "message": "",
+        "property": ""
+      },
+      "id": "26B4FFfbZP",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "id": "26B4FFfbZP",
+        "label": "Debug",
+        "name": "debug",
+        "x": 900,
+        "y": 1480
+      },
+      "outputIds": [
+      ],
+      "type": "DebugNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "actPercent",
+            "valueTemplate": "{{data.actPercent}}"
+          },
+          {
+            "columnTemplate": "lastUsage",
+            "valueTemplate": "{{data.lastUsage}}"
+          },
+          {
+            "columnTemplate": "usageThisDay",
+            "valueTemplate": "{{data.usageThisDay}}"
+          },
+          {
+            "columnTemplate": "usageThisWeek",
+            "valueTemplate": "{{data.usageThisWeek}}"
+          },
+          {
+            "columnTemplate": "usageThisMonth",
+            "valueTemplate": "{{data.usageThisMonth}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "D9XPCO-Lrm",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 1100,
+        "y": 1300
+      },
+      "outputIds": [
+        [
+          "0bBsZFh7GQ"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}+ ({{data.lastUsage}} /100)",
+            "resultPath": "data.usageThisDay"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}+ ({{data.lastUsage}} /100)",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}+ ({{data.lastUsage}} /100)",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].storage}}",
+            "resultPath": "data.storage"
+          }
+        ]
+      },
+      "id": "RaMJa9khTQ",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 1100,
+        "y": 800
+      },
+      "outputIds": [
+        [
+          "z_qiaYbhcS"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "expression": "{{data.actPercent}} >= 0"
+      },
+      "id": "vsnXF2wyTb",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "vsnXF2wyTb",
+        "label": "actPercent >=0",
+        "name": "conditional",
+        "x": 880,
+        "y": 160
+      },
+      "outputIds": [
+        [
+          "5kk5dAen_m"
+        ],
+        [
+          "cZ6dAM32Q2"
+        ]
+      ],
+      "type": "ConditionalNode"
+    },
+    {
+      "config": {
+      },
+      "id": "r_oybTXn22",
+      "meta": {
+        "annotationText": "Keine Rolle (während wechsel) oder wenn rolle mehr als leer",
+        "category": "annotation",
+        "height": 100,
+        "label": "Note",
+        "name": "note",
+        "width": 240,
+        "x": 1060,
+        "y": 160
+      },
+      "outputIds": [
+      ],
+      "type": "AnnotationNode"
+    },
+    {
+      "config": {
+        "expression": "{{data.lastUsage}} < -30 "
+      },
+      "id": "TMIueTKrIB",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "TMIueTKrIB",
+        "label": "lastUsage < -30 ",
+        "name": "conditional",
+        "x": 1200,
+        "y": 700
+      },
+      "outputIds": [
+        [
+          "RaMJa9khTQ"
+        ],
+        [
+          "PrZTVoHwEd"
+        ]
+      ],
+      "type": "ConditionalNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].storage}} -1",
+            "resultPath": "data.storage"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}",
+            "resultPath": "data.usageThisDay"
+          }
+        ]
+      },
+      "id": "PrZTVoHwEd",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 1300,
+        "y": 800
+      },
+      "outputIds": [
+        [
+          "wzPKFSW9PG"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "storage",
+            "valueTemplate": "{{data.storage}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "stGYUR1VET",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 1300,
+        "y": 1040
+      },
+      "outputIds": [
+        [
+          "z_qiaYbhcS"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "message": "",
+        "property": ""
+      },
+      "id": "r-fCwHbuHs",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "id": "r-fCwHbuHs",
+        "label": "Debug",
+        "name": "debug",
+        "x": 780,
+        "y": 360
+      },
+      "outputIds": [
+      ],
+      "type": "DebugNode"
+    },
+    {
+      "config": {
+        "keyName": "isRollChange",
+        "resultPath": "",
+        "value": "1",
+        "valueType": "number"
+      },
+      "id": "wzPKFSW9PG",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "grSPQCZHn1",
+        "label": "Storage: isRollChanged",
+        "name": "store-value",
+        "x": 1300,
+        "y": 880
+      },
+      "outputIds": [
+        [
+          "Bm37WsEhK-"
+        ]
+      ],
+      "type": "StoreValueNode"
+    },
+    {
+      "config": {
+        "nameTemplate": "LedColourYellow",
+        "payloadTemplate": "",
+        "payloadTemplateType": "json",
+        "sendToDeviceIds": [
+          "5fdb7d2e2aa0d500073c1599"
+        ],
+        "sendToDeviceTags": [
+        ]
+      },
+      "id": "Bm37WsEhK-",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "deviceSelectionType": "direct",
+        "id": "Bm37WsEhK-",
+        "label": "LedColourYellow",
+        "name": "device-command",
+        "x": 1300,
+        "y": 960
+      },
+      "outputIds": [
+        [
+          "stGYUR1VET"
+        ]
+      ],
+      "type": "DeviceSendCommandNode"
+    },
+    {
+      "config": {
+        "expression": "{{data.isRollChange}} == 0"
+      },
+      "id": "FX28mGsf4z",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "FX28mGsf4z",
+        "label": "isRollChanged?",
+        "name": "conditional",
+        "x": 980,
+        "y": 600
+      },
+      "outputIds": [
+        [
+          "9obd5xryQu"
+        ],
+        [
+          "TMIueTKrIB"
+        ]
+      ],
+      "type": "ConditionalNode"
+    },
+    {
+      "config": {
+        "expression": "abs({{data.lastUsage}}) < 1"
+      },
+      "id": "9obd5xryQu",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "9obd5xryQu",
+        "label": "Conditional",
+        "name": "conditional",
+        "x": 780,
+        "y": 700
+      },
+      "outputIds": [
+        [
+          "0bBsZFh7GQ"
+        ],
+        [
+          "AtbEIxKjZj"
+        ]
+      ],
+      "type": "ConditionalNode"
+    },
+    {
+      "config": {
+        "keyName": "isRollChange",
+        "resultPath": "",
+        "value": "0",
+        "valueType": "number"
+      },
+      "id": "AtbEIxKjZj",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "grSPQCZHn1",
+        "label": "Storage: isRollChanged",
+        "name": "store-value",
+        "x": 900,
+        "y": 800
+      },
+      "outputIds": [
+        [
+          "tifPckLB8V"
+        ]
+      ],
+      "type": "StoreValueNode"
+    },
+    {
+      "config": {
+        "nameTemplate": "LedColourBlack",
+        "payloadTemplate": "",
+        "payloadTemplateType": "json",
+        "sendToDeviceIds": [
+          "5fdb7d2e2aa0d500073c1599"
+        ],
+        "sendToDeviceTags": [
+        ]
+      },
+      "id": "tifPckLB8V",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "deviceSelectionType": "direct",
+        "id": "Bm37WsEhK-",
+        "label": "LedColourBlack",
+        "name": "device-command",
+        "x": 900,
+        "y": 880
+      },
+      "outputIds": [
+        [
+          "0bBsZFh7GQ"
+        ]
+      ],
+      "type": "DeviceSendCommandNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "actPercent",
+            "valueTemplate": "{{data.actPercent}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "0bBsZFh7GQ",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 900,
+        "y": 1400
+      },
+      "outputIds": [
+        [
+          "26B4FFfbZP"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "nameTemplate": "setRefFull",
+        "payloadTemplate": "",
+        "payloadTemplateType": "json",
+        "sendToDeviceIds": [
+          "5fdb7d2e2aa0d500073c1599"
+        ],
+        "sendToDeviceTags": [
+        ]
+      },
+      "id": "26J1IyMvD8",
+      "meta": {
+        "category": "output",
+        "description": "",
+        "deviceSelectionType": "direct",
+        "id": "26J1IyMvD8",
+        "label": "Device: setRefFull",
+        "name": "device-command",
+        "x": 900,
+        "y": 960
+      },
+      "outputIds": [
+        [
+          "0bBsZFh7GQ"
+        ]
+      ],
+      "type": "DeviceSendCommandNode"
+    },
+    {
+      "config": {
+        "defaultValue": "null",
+        "defaultValueType": "json",
+        "getAll": false,
+        "keyName": "isRollChange",
+        "valuePath": "data.isRollChange"
+      },
+      "id": "4rZLMJlpH2",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "4rZLMJlpH2",
+        "label": "Storage: Get Value",
+        "name": "get-value",
+        "x": 980,
+        "y": 440
+      },
+      "outputIds": [
+        [
+          "p_Y7mLl_si"
+        ]
+      ],
+      "type": "GetValueNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "({{data.storage}} + ({{data.actPercent}}/100) )/ (( {{dataStorageTabel.items.[0].avDay}} *  {{dataStorageTabel.items.[0].nDay}} + {{dataTabel.items.[0].usageThisDay}} ) /({{dataStorageTabel.items.[0].nDay}} + 1) )",
+            "resultPath": "data.strorageLastsUntil"
+          }
+        ]
+      },
+      "id": "z_qiaYbhcS",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "z_qiaYbhcS",
+        "label": "Math",
+        "name": "math",
+        "x": 1100,
+        "y": 1140
+      },
+      "outputIds": [
+        [
+          "7asJ9hYex6"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fe1e055e380ce000682385d",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataStorageTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "e2Cai1Zv2X",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "e2Cai1Zv2X",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 980,
+        "y": 340
+      },
+      "outputIds": [
+        [
+          "4rZLMJlpH2"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "actPercent",
+            "valueTemplate": "0"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "5kk5dAen_m",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 780,
+        "y": 280
+      },
+      "outputIds": [
+        [
+          "r-fCwHbuHs"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "strorageLastsUntil",
+            "valueTemplate": "{{data.strorageLastsUntil}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "7asJ9hYex6",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 1100,
+        "y": 1220
+      },
+      "outputIds": [
+        [
+          "D9XPCO-Lrm"
+        ]
+      ],
+      "type": "DataTableUpdateRowNode"
+    }
+  ],
+  "triggers": [
+    {
+      "config": {
+      },
+      "key": "5fdb7d2e2aa0d500073c1599",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "id": "-ICZ1UBsDD",
+        "label": "Device: Connect",
+        "name": "deviceIdsTagsConnect",
+        "uiId": "-ICZ1UBsDD",
+        "x": 80,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "XNmNMfbJNp"
+        ]
+      ],
+      "type": "deviceIdConnect"
+    },
+    {
+      "config": {
+        "attributeWhitelist": [
+          "RefZero"
+        ]
+      },
+      "key": "5fdb7d2e2aa0d500073c1599",
+      "meta": {
+        "allowedAttributeType": "attributeWhitelist",
+        "category": "trigger",
+        "description": "",
+        "id": "NsHQ_B1gkl",
+        "label": "Device: State",
+        "maxAgeToggle": false,
+        "name": "deviceIdsTags",
+        "timeUnit": "1",
+        "uiId": "NsHQ_B1gkl",
+        "x": 280,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "dqBvj7413w"
+        ]
+      ],
+      "type": "deviceId"
+    },
+    {
+      "config": {
+        "attributeWhitelist": [
+          "RefFull"
+        ]
+      },
+      "key": "5fdb7d2e2aa0d500073c1599",
+      "meta": {
+        "allowedAttributeType": "attributeWhitelist",
+        "category": "trigger",
+        "description": "",
+        "id": "NsHQ_B1gkl",
+        "label": "Device: State",
+        "maxAgeToggle": false,
+        "name": "deviceIdsTags",
+        "timeUnit": "1",
+        "uiId": "FeNKmfSNdW",
+        "x": 480,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "Ng1HfI96WH"
+        ]
+      ],
+      "type": "deviceId"
+    },
+    {
+      "config": {
+        "attributeWhitelist": [
+          "actPercent"
+        ]
+      },
+      "key": "5fdb7d2e2aa0d500073c1599",
+      "meta": {
+        "allowedAttributeType": "attributeWhitelist",
+        "category": "trigger",
+        "description": "",
+        "id": "EbyftUssv8",
+        "label": "Device: State",
+        "maxAgeToggle": false,
+        "name": "deviceIdsTags",
+        "timeUnit": "1",
+        "uiId": "EbyftUssv8",
+        "x": 880,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "vsnXF2wyTb"
+        ]
+      ],
+      "type": "deviceId"
+    },
+    {
+      "config": {
+      },
+      "key": "5fdb889d2aa0d500073c15d7-38ZSlLOGHCkz4kt9beaBh",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "deviceId": null,
+        "id": "gGtFZ7dKyI",
+        "label": "Virtual Button",
+        "name": "virtualButton",
+        "payload": "{ \"actPercent\" :110 }",
+        "uiId": "gGtFZ7dKyI",
+        "x": 1080,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "vsnXF2wyTb"
+        ]
+      ],
+      "type": "virtualButton"
+    }
+  ]
+}

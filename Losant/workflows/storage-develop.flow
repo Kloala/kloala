@@ -1,0 +1,492 @@
+{
+  "_exportDate": "2021-01-16T15:42:26.762Z",
+  "_type": "flow",
+  "applicationId": "5fdb7be95651900008f454e5",
+  "customNodeVersions": [
+  ],
+  "customNodes": [
+  ],
+  "description": "",
+  "enabled": true,
+  "flowClass": "cloud",
+  "globals": [
+  ],
+  "id": "6001c53e5749350006d2731f",
+  "name": "Storage",
+  "nodes": [
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "ftSW4PZO0H",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 160,
+        "y": 500
+      },
+      "outputIds": [
+        [
+          "kHS_YrJ-L_"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].storage}} -1",
+            "resultPath": "data.storage"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}",
+            "resultPath": "data.usageThisDay"
+          }
+        ]
+      },
+      "id": "kHS_YrJ-L_",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 160,
+        "y": 580
+      },
+      "outputIds": [
+        [
+          "vTVypu1Mcu"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "storage",
+            "valueTemplate": "{{data.storage}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "vTVypu1Mcu",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 160,
+        "y": 660
+      },
+      "outputIds": [
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "Jr6LdkL6eT",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 360,
+        "y": 500
+      },
+      "outputIds": [
+        [
+          "gZL8eqAKdB"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].storage}} -10",
+            "resultPath": "data.storage"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}",
+            "resultPath": "data.usageThisDay"
+          }
+        ]
+      },
+      "id": "gZL8eqAKdB",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 360,
+        "y": 580
+      },
+      "outputIds": [
+        [
+          "zWjE4whcYJ"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "storage",
+            "valueTemplate": "{{data.storage}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "zWjE4whcYJ",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 360,
+        "y": 660
+      },
+      "outputIds": [
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "-muMi-xzjI",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 360,
+        "y": 160
+      },
+      "outputIds": [
+        [
+          "PGQw1hJsdT"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].storage}} +10",
+            "resultPath": "data.storage"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}",
+            "resultPath": "data.usageThisDay"
+          }
+        ]
+      },
+      "id": "PGQw1hJsdT",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 360,
+        "y": 240
+      },
+      "outputIds": [
+        [
+          "JfOde77LTM"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "storage",
+            "valueTemplate": "{{data.storage}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "JfOde77LTM",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 360,
+        "y": 320
+      },
+      "outputIds": [
+      ],
+      "type": "DataTableUpdateRowNode"
+    },
+    {
+      "config": {
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "includeFieldsTemplate": "",
+        "limitTemplate": "",
+        "offsetTemplate": "",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "dataTabel",
+        "sortColumnTemplate": "",
+        "sortDirectionTemplate": ""
+      },
+      "id": "KHdpK60gO-",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "SWJ3urg_Ss",
+        "label": "Table: Get Rows",
+        "name": "get-table-rows",
+        "x": 160,
+        "y": 160
+      },
+      "outputIds": [
+        [
+          "ZGkNDxIEW5"
+        ]
+      ],
+      "type": "DataTableQueryNode"
+    },
+    {
+      "config": {
+        "statements": [
+          {
+            "expression": "{{dataTabel.items.[0].storage}} +1",
+            "resultPath": "data.storage"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisWeek}}",
+            "resultPath": "data.usageThisWeek"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisMonth}}",
+            "resultPath": "data.usageThisMonth"
+          },
+          {
+            "expression": "{{dataTabel.items.[0].usageThisDay}}",
+            "resultPath": "data.usageThisDay"
+          }
+        ]
+      },
+      "id": "ZGkNDxIEW5",
+      "meta": {
+        "category": "logic",
+        "description": "",
+        "id": "RaMJa9khTQ",
+        "label": "usageThis Day/Month/Week",
+        "name": "math",
+        "x": 160,
+        "y": 240
+      },
+      "outputIds": [
+        [
+          "nTsYuyyuYF"
+        ]
+      ],
+      "type": "MathNode"
+    },
+    {
+      "config": {
+        "dataMethod": "individualFields",
+        "dataTableIdTemplate": "5fdb81722aa0d500073c15c2",
+        "queryTemplate": "{\n  \"$or\": [\n    {\n      \"SensorName\": {\n        \"$eq\": \"KloalaSensor\"\n      }\n    }\n  ]\n}",
+        "resultPath": "",
+        "rowFields": [
+          {
+            "columnTemplate": "storage",
+            "valueTemplate": "{{data.storage}}"
+          }
+        ],
+        "rowSelectType": "query",
+        "upsertCheck": false
+      },
+      "id": "nTsYuyyuYF",
+      "meta": {
+        "category": "data",
+        "description": "",
+        "id": "LqbhYCxI-s",
+        "label": "Table: Update Row",
+        "name": "update-table-row",
+        "x": 160,
+        "y": 320
+      },
+      "outputIds": [
+      ],
+      "type": "DataTableUpdateRowNode"
+    }
+  ],
+  "triggers": [
+    {
+      "config": {
+      },
+      "key": "6001c53e5749350006d2731f-TEkQgC0yhL6orZp1i7_fu",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "deviceId": null,
+        "id": "Tx2lnoBZCJ",
+        "label": "Stroage +1",
+        "name": "virtualButton",
+        "payload": "",
+        "uiId": "Tx2lnoBZCJ",
+        "x": 160,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "KHdpK60gO-"
+        ]
+      ],
+      "type": "virtualButton"
+    },
+    {
+      "config": {
+      },
+      "key": "6001c53e5749350006d2731f-PVPnrMUNMpRa0rdE4WfQp",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "deviceId": null,
+        "id": "8vph_sr7M0",
+        "label": "Stroage +10",
+        "name": "virtualButton",
+        "payload": "",
+        "uiId": "8vph_sr7M0",
+        "x": 360,
+        "y": 80
+      },
+      "outputIds": [
+        [
+          "-muMi-xzjI"
+        ]
+      ],
+      "type": "virtualButton"
+    },
+    {
+      "config": {
+      },
+      "key": "6001c53e5749350006d2731f-ekMbjmD3l7XURduIBjwKH",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "deviceId": null,
+        "id": "NviGx6ltSu",
+        "label": "Stroage -10",
+        "name": "virtualButton",
+        "payload": "",
+        "uiId": "NviGx6ltSu",
+        "x": 360,
+        "y": 420
+      },
+      "outputIds": [
+        [
+          "Jr6LdkL6eT"
+        ]
+      ],
+      "type": "virtualButton"
+    },
+    {
+      "config": {
+      },
+      "key": "6001c53e5749350006d2731f-DEQTmk0cX_FlBAVLQkq6U",
+      "meta": {
+        "category": "trigger",
+        "description": "",
+        "deviceId": null,
+        "id": "qozbvRLZ0j",
+        "label": "Stroage -1",
+        "name": "virtualButton",
+        "payload": "",
+        "uiId": "qozbvRLZ0j",
+        "x": 160,
+        "y": 420
+      },
+      "outputIds": [
+        [
+          "ftSW4PZO0H"
+        ]
+      ],
+      "type": "virtualButton"
+    }
+  ]
+}
