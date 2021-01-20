@@ -2,7 +2,8 @@
 
 ## Quick Overview
 
-[SimpleShow Video](https://videos.mysimpleshow.com/6URJ26FOZ4)
+* [SimpleShow Video](https://videos.mysimpleshow.com/6URJ26FOZ4)
+* [Hackster](https://www.hackster.io/Kloala/kloala-e65506)
 
 ## Hardware
 
@@ -17,15 +18,15 @@
 |![Adafruit Micro-Lipo Charger](./img/Adafruit_Micro-Lipo_Charger.png)|![Adafruit 9-DOF LSM9DS1 Breakout](./img/Adafruit_9-DOF_LSM9DS1.png)|![Electret Microphone Amplifier - MAX4466](./img/Electret_Microphone_Amplifier_MAX4466.png)|
 
 ### Sensors
-#### on the Arduino Nano 33 BLE Sense
+<!-- #### on the Arduino Nano 33 BLE Sense
 
 |Type|Name|Quick Info|Datasheet|
 |:-:|:-:|:-:|:-:|
 |Temperature, Humidity|HTS221|±3.5% Humidity accuracy,<br>±0.5% Temp accuracy,<br>16-bit resolution|https://content.arduino.cc/assets/Nano_BLE_Sense_HTS221.pdf|
 |Gesture, light, proximity|APDS9960||https://content.arduino.cc/assets/Nano_BLE_Sense_av02-4191en_ds_apds-9960.pdf|
-|Barometric pressure|LPS22HB||https://content.arduino.cc/assets/Nano_BLE_Sense_lps22hb.pdf|
+|Barometric pressure|LPS22HB||https://content.arduino.cc/assets/Nano_BLE_Sense_lps22hb.pdf| -->
 
-#### 3rd party
+<!-- #### 3rd party -->
 
 |Type|Name|Quick Info|Datasheet|
 |:-:|:-:|:-:|:-:|
