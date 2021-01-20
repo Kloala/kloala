@@ -10,139 +10,33 @@ into your custom HTML page.
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style>
- body{
-    padding: 0px;
-    margin: 0px;
-    background-color: rgb(255, 255, 255);
-}
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      "Infos Infos Infos Infos"
-      "Infos Infos Infos Infos"
-      "Infos Infos Infos Infos"
-      "Infos Infos Infos Infos"
-      "Infos Infos Infos Infos"
-      "Infos Infos Infos Infos"
-      "Current Storage Stats Settings";
-      background-color: whitesmoke;
+  body {
+    padding: 10px;
+    background: transparent;
   }
-  
-  .Infos {
-    display: grid;
-    grid-template-columns: 0.0fr 3fr 0.0fr;
-    grid-template-rows: 1fr 1fr 2fr 2fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      ". DailyAvg ."
-      ". remainingStorage ."
-      ". usageWeek ."
-      ". usageDay .";
-    grid-area: Infos;
-    background-color: whitesmoke;
-    border: 2px red;
-    text-align: center;
-  }
-  
-  .DailyAvg { grid-area: DailyAvg; 
-    border: 3px solid #00c1d5 ;
-    margin-bottom: 5px;
-    background-color: #404040;
-  
-}
-  
-  .remainingStorage { grid-area: remainingStorage; 
-    border: 3px solid #00c1d5 ;
-    margin-bottom: 5px;
-    background-color: #404040;
-}
-  
-  .usageWeek { grid-area: usageWeek; 
-    border: 3px solid #00c1d5 ;
-    margin-bottom: 5px;
-    background-color: #404040;
-}
-  
-  .usageDay { grid-area: usageDay;
-    border: 3px solid #00c1d5 ;
-    background-color: #404040;
-    margin-bottom: 5px;
-}
-.title{
-    margin-top: 5px;
-    margin-bottom: 0px;
-    padding: 0px;
-    color: #00c1d5;
-    text-transform: uppercase;
-}
-.value{
-    color: whitesmoke;
-}
-.statImg{
-   
-    /* height: 70%;
-    border: 2px solid black ;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url("Statistik-Mediamodifier_pixabay-1024x576.jpg"); */
-
-}
-
-
-/*Settings*/
-  .Current { grid-area: Current; 
-    height: 70px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("https://raw.githubusercontent.com/Kloala/kloala/b8a565b5f6ae5ba50164fa554b32c5ec59b80d4d/Losant/SVG/toilet-paper.svg?token=ASFEQ6AL5PWBMYRWMLLXPFC775GDO");
-    border: 3px solid #0A4248 ;
-}
-  
-  .Storage { grid-area: Storage; 
-
-    margin-left: 2px;
-    margin-right: 2px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("https://raw.githubusercontent.com/Kloala/kloala/b8a565b5f6ae5ba50164fa554b32c5ec59b80d4d/Losant/SVG/warehouse.svg?token=ASFEQ6FLPPCPNPEKDHEMLZS775F5S");
-    border: 3px solid #0A4248 ;
-}
-  
-  .Stats { grid-area: Stats; 
-
-    margin-right: 2px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("https://raw.githubusercontent.com/Kloala/kloala/b8a565b5f6ae5ba50164fa554b32c5ec59b80d4d/Losant/SVG/trending.svg?token=ASFEQ6FDFJNASPXMNNHAHO2775GDQ");
-    border: 3px solid #0A4248 ;
-}
-
-  .Settings { grid-area: Settings; 
-
-   
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("https://raw.githubusercontent.com/Kloala/kloala/b8a565b5f6ae5ba50164fa554b32c5ec59b80d4d/Losant/SVG/settings.svg?token=ASFEQ6CRV2KP3GCJU4BXNWS775GDO");
-    border: 3px solid #0A4248 ;
-}
-  
 </style>
 <script type="text/javascript">
+  /*
+    Renders the block input to the page.
+    This function is simply printing the raw data to the page
+    for debugging purposes.
+  */
+  function renderBlock(input) {
+    document.getElementById('blockInput').innerHTML =
+      JSON.stringify(input, undefined, 2);
+  }
 
-  /*Custom skript*/
-
-// DashboardBlock.on('change', renderKlorolle);
+  /*
+    Add listeners to your required events. These listeners invoke
+    the functions above so that your code can handle the event
+    as needed.
+  */
+  DashboardBlock.on('change', renderBlock);
 
   /*
     Render the initial state when the block loads.
   */
- 
+  $(document).ready(function() {
+    renderBlock(DashboardBlock.input);
+  });
 </script>
