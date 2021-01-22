@@ -81,8 +81,8 @@ void setColour(CRGB colour ){
 //------------------------------------------------------------------------
 
 Adafruit_VL6180X disatanceSensor = Adafruit_VL6180X();
-unsigned int refZeroDistance = 0;  //Von Losant gesendet nach PowerUp
-unsigned refFullDistance = 0; // Von Losant gesendet nach PowerUp
+unsigned int refZeroDistance = 0;  //send by Losant after PowerUp
+unsigned refFullDistance = 0; //send by Losant after PowerUp
 unsigned int aktDistance = 0;
 int aktProzent = 0;
 unsigned long median = 0;
@@ -148,7 +148,7 @@ void setRefFull(int newFull){
 //Processes mm into %, retuns percent as an int
 int distance2percent(int distanceMM, int refZero, int refFull){
   int distancePercent = 0;
-  distancePercent= 100 - ((distanceMM - refFull) * 100)  / (refZero - refFull); //umrechnung in Prozent
+  distancePercent= 100 - ((distanceMM - refFull) * 100)  / (refZero - refFull); //Distance to Prozent
   return distancePercent;
 }
 
@@ -180,8 +180,8 @@ void handleCommand(LosantCommand *command) {
     if((refFullDistance == 0) || (refZeroDistance == 0)){
       Serial.println("Error Reciving Data from Losant: Restart or Calibrate manually");
       setColour(CRGB::OrangeRed);
-      refFullDistance = -1;
-      refZeroDistance = -1;
+      refFullDistance = 0;
+      refZeroDistance = 0;
     }  
   }
   else if(strcmp(command->name, "setRefFull") == 0){
@@ -308,6 +308,7 @@ void loop() {
   readDistance();
 
   if((millis()-aktTime) > 1000){ //send once per second
+
       aktTime = millis();
       Serial.print("runs =");
       Serial.print(counterRunsSensor);
