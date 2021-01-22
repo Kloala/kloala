@@ -1,101 +1,334 @@
-<div class="grid-container">
-    <div class="Infos">
-      <div class="DailyAvg">
-        <div>
-          <p class="title">Daily usage</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<style>
+    body{
+        margin: 0px;
+        padding: 0px;
+    }
+    .container {
+        display: flex;
+        flex-flow: column;
+        height: 100%;
+        width: 366px;
+        background-color: #404040;
+    }
+
+    .navbar {
+        display: flex;
+        flex-flow: row;
+    }
+
+    .btn {
+        position: relative;
+        bottom: 0px;
+        width: 25%;
+        height: 80px;
+        text-align: center;
+        border: solid 2px #00c1d5;
+        background-color: whitesmoke;
+    }
+
+    .btn-Home {
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/toilet-paper.svg");
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
+        margin-right: 5px;
+    }
+
+    .btn-Storage {
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/warehouse.svg");
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
+        margin-right: 5px;
+    }
+
+    .btn-Statisic {
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/trending.svg");
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
+        margin-right: 5px;
+    }
+
+    .btn-Settings {
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/settings.svg");
+        background-repeat: no-repeat;
+        background-size: 80%;
+        background-position: center;
+    }
+
+    .content {
+        height: 595px;
+        /* border: 1px solid red; */
+    }
+
+    /* Aktuell */
+    .akt-titel {
+        text-align: center;
+    }
+
+    .akt-titel-percent {
+        font-size: 80px;
+        font-weight: bold;
+        color: white;
+    }
+    .akt-Pic{
+        height: 400px;
+        background-color: white;
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/Paper.svg");
+        background-position: center;
+        background-size: 90%;
+        background-repeat: no-repeat;
+         background-color: #404040;
+    }
+
+    .akt-titel-text {
+        color: #00c1d5
+    }
+
+    /* Storage */
+    .storage-titel{
+        text-align: center;
+        color: #00c1d5;
+    }
+    
+    .storage-titel-text{
+        text-align: center;
+        font-size: 60px;
+        font-weight: bold;
+        color: white;
+   
+    }
+    .storage-anz{
+        height: 350px;
+    }
+    a{
+        width: 250px;
+        background-image: url("https://files.onlosant.com/5fdb7be95651900008f454e5/amazon_transparent.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+       
+    }
+    .link-box{
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        justify-items: center;
+        border-radius: 2px;
+        height: 75px;
+        background: none;
+    }
+    /* Stats */
+    .statistic-Daily{
+        height: 85px ;
+        margin-bottom: 5px;
+        color:#00c1d5;
+        text-align: center;
+    }
+    #daily{
+        color: white;
+        text-align: center;
+    }
+    #weekly{
+        color: white;
+        text-align: center;
+    }
+    .statistic-weekly{
+        height: 85px ;
+        margin-bottom: 5px;
+        color:#00c1d5;
+        text-align: center;
+    }
+    .statistic-Until{
+        height: 85px ;
+        margin-bottom: 5px;
+        padding-top: 10px;
+
+    }
+    .usage-OverWeek-titel{
+        text-align: center;
+        color: #00c1d5;
+    }
+    .usage-OverDay-titel{
+        text-align: center;
+        color: #00c1d5;
+    }
+    /* Setting */
+</style>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <div id= "content-1" class="content-1" >
+                <div class="akt-titel">
+                    <div id="paperPer" class="akt-titel-percent" >
+                        78%
+                    </div>
+                    <div class="akt-titel-text">
+                        on the roll!
+                    </div>
+                </div>
+                <div class="akt-Pic">
+                </div>
+            </div>
+            <div id= "content-2" class="content-2" style="display: none;">
+                <div class="storage-titel">
+                    Storage
+                </div>
+                <div id = "Storage" class="storage-titel-text">
+                    10
+                </div>
+                <div class="storage-titel">
+                    rolls 
+                </div>
+                <div class="storage-anz" >
+                    <!--
+Begin Losant Embed
+Drop this in your markup where you would like the widget to go.
+-->
+<a class="los-widget" 
+  href="https://app.losant.com/dashboards/5fdb84ae6598fa0006fdddac?embed=DO-_PqINpn"
+  data-dashboard-id="5fdb84ae6598fa0006fdddac"
+  data-block-id="DO-_PqINpn"
+  data-theme="dark"
+  data-height="320px"
+  data-width="100%">
+  View my Losant-powered widget "Storage"
+</a>
+<script>window.lsnt = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0], t = window.lsnt || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://app.losant.com/scripts/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs); t._e = [];
+  t.ready = function(f) { t._e.push(f); }; return t;
+}(document, "script", "lsnt-widgets"));</script>
+<!-- End Losant Embed -->
+                </div>
+
+                <div class="link-box">
+                    <a href="https://amzn.to/35MdND4" target="blank"></a>
+                </div>
+            </div>
+            <div id= "content-3" class="content-3"  style="display: none; ">
+                    <div  class="statistic-Daily">Daily Average
+
+                        <div id="daily"> 13</div>
+                    </div>
+                    <div  class="statistic-weekly"> Weekly Average
+
+                        <div id="weekly">13123</div>
+                    </div>
+                <div>
+                    <div class="usage-OverWeek-titel">Usage over Week</div>
+                    <canvas id="myChart" class="storage-OverWeek"></canvas>
+
+                </div>
+                <div>
+                    <div class="usage-OverDay-titel">Usage over Day</div>
+                    <canvas id="myChart2" class="storage-OverDay"></canvas>
+
+                </div>
+
+              
+            </div>
+            <div id= "content-4" style="display: none;">
+
+        <a class="los-widget" href="https://app.losant.com/dashboards/5fdb84ae6598fa0006fdddac?embed=NqYaOaMYa3"
+            data-dashboard-id="5fdb84ae6598fa0006fdddac" data-block-id="NqYaOaMYa3" data-theme="dark"
+            data-height="400px" data-width="100%">
+            View my Losant-powered widget ""
+        </a>
+        <script>window.lsnt = (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0], t = window.lsnt || {};
+                if (d.getElementById(id)) return t;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://app.losant.com/scripts/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs); t._e = [];
+                t.ready = function (f) { t._e.push(f); }; return t;
+            }(document, "script", "lsnt-widgets"));</script>
+  
+            </div>
+           
         </div>
-        <div>
-          <p id = "Daily" class="value">0,189 Rolls per day</p>
+
+        <div class="navbar">
+            <div id="btn1" class="btn btn-Home"></div>
+            <div id="btn2" class="btn btn-Storage"></div>
+            <div id= "btn3" class="btn btn-Statisic"></div>
+            <div id= "btn4" class="btn btn-Settings"></div>
         </div>
-      </div>
-      <div class="remainingStorage">
-        <div>
-          <p " class="title">Storage</p>
-        </div>
-        <div>
-          <p id="Storage" class="value"></p>
-        </div>
-      </div>
-      <div class="usageWeek">
-        <div>
-          <p class="title">Usage over Day</p>
-        </div>
-        <div class="statImg">
-          <canvas id="myChart2" style="width:100%;height:100%;"></canvas>
-        </div>
-      </div>
-      <div class="usageDay">
-        <div>
-          <p class="title">Usage over Week</p>
-        </div>
-        <div class="statImg">
-          <canvas id="myChart"style="width:100%;height:100%;" ></canvas>
-        </div>
-      </div>
     </div>
-    <div class="Current"></div>
-    <div class="Storage"></div>
-    <div class="Stats"></div>
-    <div class="Settings"></div>
-  </div>
-  <script>
-
-function updateData(){ 
-      var queryDaten = DashboardBlock.input.queries.myDataStored.items;
-      var averageDay = [queryDaten[0].avMon,
-                        queryDaten[0].avTue,
-                        queryDaten[0].avWed,
-                        queryDaten[0].avThu,
-                        queryDaten[0].avFri,
-                        queryDaten[0].avSat,
-                        queryDaten[0].avSun
-                        ];  
-      var avDay = queryDaten[0].avDay;
-      var nDay = queryDaten[0].nDay;
-      var avWeek = queryDaten[0].avWeek;
-      var nWeek = queryDaten[0].nWeek;
-      var avMonth = queryDaten[0].avMonth;
-      var nMonth = queryDaten[0].nMonth;
-      var statsUpdatedAt = queryDaten[0].updatedAt;
-      
-      var queryDaten2 = DashboardBlock.input.queries.myDataAktuell.items;
-      var actPercent = queryDaten2[0].actPercent;
-      var lastUsage = queryDaten2[0].lastUsage;
-      var usageThisDay = queryDaten2[0].usageThisDay;
-      var usageThisWeek = queryDaten2[0].usageThisWeek;
-      var usageThisMonth = queryDaten2[0].usageThisMonth;
-      var storage = queryDaten2[0].storage;
-      var refZero = queryDaten2[0].refFull;
-      var strorageLastsUntil = queryDaten2[0].strorageLastsUntil;
-      var actUpdatedAt = queryDaten2[0].updatedAt;
-
-      //Update stuff
-
-       document.getElementById("Storage").innerHTML = storage;
-       document.getElementById("Daily").innerHTML = avDay;
-
-
-      //Chart 1
-      var ctx = document.getElementById('myChart').getContext('2d');
-      var chart = new Chart(ctx, {
+</body>
+<script>
+  
+    function updateData() {
+        var queryDaten = DashboardBlock.input.queries.myDataStored.items;
+        var averageDay = [queryDaten[0].avMon,
+        queryDaten[0].avTue,
+        queryDaten[0].avWed,
+        queryDaten[0].avThu,
+        queryDaten[0].avFri,
+        queryDaten[0].avSat,
+        queryDaten[0].avSun
+        ];
+        var avDay = queryDaten[0].avDay;
+        var nDay = queryDaten[0].nDay;
+        var avWeek = queryDaten[0].avWeek;
+        var nWeek = queryDaten[0].nWeek;
+        var avMonth = queryDaten[0].avMonth;
+        var nMonth = queryDaten[0].nMonth;
+        var statsUpdatedAt = queryDaten[0].updatedAt;
+  
+        var queryDaten2 = DashboardBlock.input.queries.myDataAktuell.items;
+        var actPercent = queryDaten2[0].actPercent;
+        var lastUsage = queryDaten2[0].lastUsage;
+        var usageThisDay = queryDaten2[0].usageThisDay;
+        var usageThisWeek = queryDaten2[0].usageThisWeek;
+        var usageThisMonth = queryDaten2[0].usageThisMonth;
+        var storage = queryDaten2[0].storage;
+        var refZero = queryDaten2[0].refFull;
+        var strorageLastsUntil = queryDaten2[0].strorageLastsUntil;
+        var actUpdatedAt = queryDaten2[0].updatedAt;
+  
+        //Update stuff
+  
+        document.getElementById("Storage").innerHTML = storage;
+        document.getElementById("daily").innerHTML = avDay.toPrecision(2)+" Rollen per Day";
+        document.getElementById("weekly").innerHTML = avWeek.toPrecision(2)+" Rollen per Week";
+        document.getElementById("paperPer").innerHTML = actPercent+"%";
+  
+  
+        // Chart 1
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
             // responsive: true,
             // maintainAspectRatio: false,
             // The type of chart we want to create
             type: 'bar',
-        
+  
             // The data for our dataset
             data: {
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday' ,'Sunday'  ],
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                 datasets: [{
                     label: 'KW 31',
                     backgroundColor: 'rgba(0, 193, 213, 0.2)',
-                    hoverBackgroundColor:'white',
+                    hoverBackgroundColor: 'white',
                     borderColor: 'rgba(0, 193, 213, 8)',
                     borderWidth: 1.5,
-                //  data: [10, 2, 5, 8, 11,25,7]
-                data: [averageDay[0],averageDay[1],averageDay[2],averageDay[3],averageDay[4],averageDay[5],averageDay[6]]
-
-                
+                     data: [10, 2, 5, 8, 11,25,7]
+                    // data: [averageDay[0], averageDay[1], averageDay[2], averageDay[3], averageDay[4], averageDay[5], averageDay[6]]
+  
+  
                 }]
             },
             // Configuration options go here
@@ -106,7 +339,7 @@ function updateData(){
                         right: 0,
                         top: 0,
                         bottom: 0
-                    }   
+                    }
                 },
                 legend: {
                     display: false,
@@ -115,46 +348,49 @@ function updateData(){
                     }
                 },
                 scales: {
-                        xAxes: [{
-                            display: true,
-                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
-                            scaleLabel: { display: false, labelString: 'Wochentage',fontColor:'white', fontSize:10 },
-                            ticks: {fontColor: "white",fontSize: 14},
-                            barThickness: 20,
-                            
-                            minBarLength: 2,
-                            stacked: true
-                        }],
-                        yAxes: [{
-                            display: true,
-                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
-                            scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize:10 },
-                            ticks: { fontColor: "white", fontSize: 14,beginAtZero: true },
-                        
-                        }]
-                    }
-
+                    xAxes: [{
+                        display: true,
+                        gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                        scaleLabel: { display: false, labelString: 'Wochentage', fontColor: 'white', fontSize: 10 },
+                        ticks: { fontColor: "white", fontSize: 14 },
+                        barThickness: 20,
+  
+                        minBarLength: 2,
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                        scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize: 10 },
+                        ticks: { fontColor: "white", fontSize: 14, beginAtZero: true },
+  
+                    }]
+                }
+  
             }
         });
-      //Chart 2
+        //Chart 2
+        console.log( document.getElementById('myChart2'));
         var ctx2 = document.getElementById('myChart2').getContext('2d');
         var chart2 = new Chart(ctx2, {
             // responsive: true,
             // maintainAspectRatio: false,
             // The type of chart we want to create
-            type: 'bar',
-        
+            type: 'line',
+  
             // The data for our dataset
             data: {
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saturday' ,'Sunday'  ],
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+                 //  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
                 datasets: [{
                     label: 'KW 31',
                     backgroundColor: 'rgba(0, 193, 213, 0.2)',
-                    hoverBackgroundColor:'white',
+                    hoverBackgroundColor: 'white',
                     borderColor: 'rgba(0, 193, 213, 8)',
-                    borderWidth: 1.5,
-                    data: [10, 2, 5, 8, 11,25,7]
-                
+                    borderWidth: 0.5,
+                   // data: [averageDay[0], averageDay[1], averageDay[2], averageDay[3], averageDay[4], averageDay[5], averageDay[6]]
+                    data: [0, 0, 0, 1, 2, 3, 0, 0, 0, 5, 0, 0, 3, 3, 10, 0, 0, 2, 1, 0, 0, 3, 2, 0, 0]
+  
                 }]
             },
             // Configuration options go here
@@ -165,7 +401,7 @@ function updateData(){
                         right: 0,
                         top: 0,
                         bottom: 0
-                    }   
+                    }
                 },
                 legend: {
                     display: false,
@@ -174,27 +410,83 @@ function updateData(){
                     }
                 },
                 scales: {
-                        xAxes: [{
-                            display: true,
-                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
-                            scaleLabel: { display: false, labelString: 'Wochentage',fontColor:'white', fontSize:10 },
-                            ticks: {fontColor: "white",fontSize: 14},
-                            barThickness: 20,
-                            
-                            minBarLength: 2,
-                            stacked: true
-                        }],
-                        yAxes: [{
-                            display: true,
-                            gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
-                            scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize:10 },
-                            ticks: { fontColor: "white", fontSize: 14,beginAtZero: true },
-                        
-                        }]
-                    }
+                    xAxes: [{
+                        display: true,
+                        gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                        scaleLabel: { display: false, labelString: 'Wochentage', fontColor: 'white', fontSize: 10 },
+                        ticks: { fontColor: "white", fontSize: 14 },
+                        barThickness: 10,
+  
+                        minBarLength: 2,
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        display: true,
+                        gridLines: { color: 'rgba(195, 231, 235, 0.5)' },
+                        scaleLabel: { display: true, labelString: 'Verbrauch in m', fontColor: 'white', fontSize: 10 },
+                        ticks: { fontColor: "white", fontSize: 14, beginAtZero: true },
+  
+                    }]
+                }
             }
         });
+  
+    }
+  DashboardBlock.on("queryChange", updateData);
+  
+    document.getElementById("btn1").addEventListener("click", function () {
+        var boxInfo = document.getElementById("content-3");
+        var boxEinst = document.getElementById("content-4");
+        var boxPaper = document.getElementById("content-1");
+        var boxStore = document.getElementById("content-2");
+        if (boxPaper.style.display == "none") {
+            boxPaper.style.display = "block";
+            boxInfo.style.display = "none";
+            boxEinst.style.display = "none";
+             boxStore.style.display = "none";
+        }
+    });
+  
+    document.getElementById("btn2").addEventListener("click", function () {
+        var boxInfo = document.getElementById("content-3");
+        var boxEinst = document.getElementById("content-4");
+        var boxPaper = document.getElementById("content-1");
+        var boxStore = document.getElementById("content-2");
+        if (boxStore.style.display = "none") {
+            boxStore.style.display = "block";
+            boxInfo.style.display = "none";
+            boxEinst.style.display = "none";
+            boxPaper.style.display = "none";
+        }
+    });
+  
+    document.getElementById("btn3").addEventListener("click", function () {
+        var boxInfo = document.getElementById("content-3");
+        var boxEinst = document.getElementById("content-4");
+        var boxPaper = document.getElementById("content-1");
+        var boxStore = document.getElementById("content-2");
+        if (boxInfo.style.display == "none") {
+            boxInfo.style.display = "block";
+            boxPaper.style.display = "none";
+            boxEinst.style.display = "none";
+            boxStore.style.display = "none";
+        }
+    });
+  
+    document.getElementById("btn4").addEventListener("click", function () {
+        var boxInfo = document.getElementById("content-3");
+        var boxEinst = document.getElementById("content-4");
+        var boxPaper = document.getElementById("content-1");
+        var boxStore = document.getElementById("content-2");
+        if (boxEinst.style.display == "none") {
+            boxEinst.style.display = "block";
+            boxPaper.style.display = "none";
+            boxInfo.style.display = "none";
+            boxStore.style.display = "none";
+        }
+    });
+  
+  
+  </script> 
 
-  }
-  DashboardBlock.on("queryChange",updateData);
-  </script>
+</html>
