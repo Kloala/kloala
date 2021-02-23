@@ -12,8 +12,8 @@ unsigned long aktTime = 0;
 
 
 // WiFi credentials.
-const char* WIFI_SSID = "Hofmayer_Keller";
-const char* WIFI_PASS = "J0p@ul21!";
+const char* WIFI_SSID = "XXXX";
+const char* WIFI_PASS = "*******";
 
 // Losant credentials.
 const char* LOSANT_DEVICE_ID = "5fdb7d2e2aa0d500073c1599";
